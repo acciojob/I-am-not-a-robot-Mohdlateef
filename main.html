@@ -1,18 +1,95 @@
-<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>I'm not a robot</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <main>
-      <!-- solution start -->
-      
-      <!-- solution end -->
-    </main>
-    <script src="./script.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Human Verification</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h3 id="h">Please click on the identical tiles to verify that you are not a robot.</h3>
+  <div id="images-container">
+    <img src="https://picsum.photos/id/237/200/300" class="img1" alt="Tile 1">
+    <img src="https://picsum.photos/seed/picsum/200/300" class="img2" alt="Tile 2">
+    <img src="https://picsum.photos/200/300/" class="img3" alt="Tile 3">
+    <img src="https://picsum.photos/200/300.jpg" class="img4" alt="Tile 4">
+   
+  </div>
+  <button id="reset" style="display: none;">Reset</button>
+  <button id="verify" style="display: none;">Verify</button>
+  <p id="para"></p>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const images = document.querySelectorAll('img');
+      const resetButton = document.getElementById('reset');
+      const verifyButton = document.getElementById('verify');
+      const para = document.getElementById('para');
+      let clickedImages = [];
+
+      // Function to shuffle array
+      function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+      }
+
+      // Function to check if all clicked images are identical
+      function areImagesIdentical() {
+        return clickedImages.every((img, index, array) => img === array[0]);
+      }
+
+      // Function to reset state
+      function resetState() {
+        clickedImages = [];
+        resetButton.style.display = 'none';
+        verifyButton.style.display = 'none';
+        para.textContent = '';
+      }
+
+      // Function to handle image click
+      function handleImageClick(event) {
+        const clickedImg = event.target.classList[0];
+        if (clickedImages.includes(clickedImg)) return;
+        clickedImages.push(clickedImg);
+        
+        if (clickedImages.length === 2) {
+          verifyButton.style.display = 'block';
+          if (areImagesIdentical()) {
+            para.textContent = 'You are a human. Congratulations!';
+          } else {
+            para.textContent = 'We can\'t verify you as a human. You selected the non-identical tiles.';
+          }
+        }
+      }
+
+      // Function to handle reset button click
+      function handleResetClick() {
+        resetState();
+      }
+
+      // Function to handle verify button click
+      function handleVerifyClick() {
+        verifyButton.style.display = 'none';
+        resetState();
+      }
+
+      // Assign event listeners
+      images.forEach(img => {
+        img.addEventListener('click', handleImageClick);
+      });
+      resetButton.addEventListener('click', handleResetClick);
+      verifyButton.addEventListener('click', handleVerifyClick);
+
+      // Randomly shuffle and assign images
+      const imageClasses = ['img1', 'img2', 'img3', 'img4', 'img5', 'img6'];
+      const shuffledClasses = shuffleArray([...imageClasses, ...imageClasses]);
+      images.forEach((img, index) => {
+        img.src = `image_${shuffledClasses[index]}.jpg`; // replace with actual image URLs
+        img.classList.add(shuffledClasses[index]);
+      });
+    });
+  </script>
+</body>
 </html>
