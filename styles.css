@@ -1,4 +1,4 @@
-/* .img1 {
+img1 {
   content: url("https://picsum.photos/id/237/200/300");
 }
 
@@ -14,7 +14,7 @@
 }
 .img5 {
   content: url("https://picsum.photos/200/300.jpg");
-}
+} 
 
 img {
   margin: 10px;
@@ -38,4 +38,4 @@ p {
 button {
   margin: 20px;
 }
- */
+ 
